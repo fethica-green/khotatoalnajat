@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>خطة النجاة: اللعبة</title>
+<meta name="description" content="لعبة خطة النجاة: 6 أماكن، 30 يوم في كل مكان، ولعبة مختلفة لكل حلقة. محبوس؟ إليك الخطة.">
+<meta name="theme-color" content="#0e1433">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://khotatoalnajat.com/">
+<meta property="og:title" content="خطة النجاة: اللعبة">
+<meta property="og:description" content="6 أماكن، 30 يوم في كل مكان، ولعبة مختلفة لكل حلقة. محبوس؟ إليك الخطة.">
+<meta property="og:image" content="https://khotatoalnajat.com/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://khotatoalnajat.com/og.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -39,6 +51,8 @@ canvas#cv{position:fixed;inset:0;width:100%;height:100%;display:block}
   padding:18px 16px;text-align:center;overflow-y:auto;touch-action:pan-y;z-index:10}
 .ov.on{display:flex}
 .ov.mid{justify-content:center}
+.fit{display:flex;flex-direction:column;align-items:center;width:100%;flex:none}
+#sHome .fit{min-height:100%;justify-content:space-between}
 h2{font-size:26px;font-weight:900;margin:4px 0 10px}
 p{font-size:16px;line-height:1.6;margin:6px 0;max-width:440px}
 .tag{color:#9fd8ff;font-weight:900}
@@ -61,16 +75,19 @@ p{font-size:16px;line-height:1.6;margin:6px 0;max-width:440px}
 #play{font-size:30px;padding:8px 54px;animation:pulse 1.4s ease-in-out infinite}
 .rowb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 /* tiles */
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:100%;max-width:620px}
-@media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr);max-width:980px}}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:min(520px,calc((100dvh - 330px)*.875 + 10px))}
+@media(min-aspect-ratio:7/10) and (max-aspect-ratio:1/1){.grid{grid-template-columns:repeat(3,1fr);max-width:min(100%,calc((100dvh - 302px)*1.75 + 20px))}}
+@media(min-aspect-ratio:1/1){.grid{grid-template-columns:repeat(4,1fr);max-width:min(1100px,calc((100dvh - 290px)*3.5 + 30px))}
+  #dcards{flex-direction:row;max-width:900px;align-items:flex-start}#dcards .dc{flex:1}}
+.dc{display:flex;flex-direction:column;gap:6px;align-items:center}.dc .card{width:100%}
 .tile{background:#fff;border:4px solid #111;border-radius:16px;padding:0;overflow:hidden;box-shadow:0 5px 0 #111;color:#111;position:relative;display:flex;flex-direction:column}
 .tile:active{transform:translateY(4px);box-shadow:0 1px 0 #111}
-.tile canvas{width:100%;display:block;aspect-ratio:7/5;background:#223}
-.tile .nm{font-weight:900;font-size:17px;padding:4px 6px 0}
+.tile canvas{width:100%;display:block;aspect-ratio:7/4;object-fit:cover;background:#223}
+.tile .nm{font-weight:900;font-size:16px;padding:2px 6px 0;line-height:1.3}
 .tile .pr{font-size:12px;font-weight:600;color:#555;padding:0 6px 6px}
 .tile .ep{position:absolute;top:6px;inset-inline-start:6px;background:#ff7a1a;border:3px solid #111;border-radius:10px;font-size:12px;font-weight:900;padding:0 7px}
-.tile.lock{background:#1c1c33;color:#889;border-style:dashed;border-color:#556;box-shadow:none;justify-content:center;align-items:center;min-height:150px}
-.tile.lock b{font-size:54px;line-height:1}
+.tile.lock{background:#1c1c33;color:#889;border-style:dashed;border-color:#556;box-shadow:none;justify-content:center;align-items:center;min-height:90px}
+.tile.lock b{font-size:40px;line-height:1}
 .cards{display:flex;flex-direction:column;gap:10px;width:100%;max-width:380px;margin-top:8px}
 .card{text-align:start;background:#fff;color:#111;border:4px solid #111;border-radius:16px;padding:9px 14px;box-shadow:0 5px 0 #111;display:flex;gap:12px;align-items:center}
 .card:active{transform:translateY(4px);box-shadow:0 1px 0 #111}
@@ -103,7 +120,7 @@ h1.big{font-size:44px;font-weight:900;margin:0;line-height:1.15;color:#ffb84a;te
     <button class="go" id="play">▶ <span data-t="play"></span></button>
     <div class="rowb">
       <a class="ghost yt" href="https://www.youtube.com/@khotatoAlnajat" target="_blank" rel="noopener">▶ <span data-t="channel"></span></a>
-      <button class="ghost langB"></button><button class="ghost" id="sndB">🔊</button>
+      <button class="ghost langB"></button><button class="ghost" id="sndB">🔊</button><button class="ghost" id="fsB">⛶</button>
     </div>
   </div>
 </div>
@@ -396,7 +413,11 @@ function update(dt){
 }
 
 /* ---------- flow ---------- */
-function show(id){for(const e of document.querySelectorAll('.ov'))e.classList.toggle('on',e.id===id);
+for(const o of document.querySelectorAll('.ov')){const f=document.createElement('div');f.className='fit';while(o.firstChild)f.appendChild(o.firstChild);o.appendChild(f);}
+function fit(){const o=document.querySelector('.ov.on');if(!o)return;const f=o.firstElementChild,cs=getComputedStyle(o);f.style.zoom=1;
+  const avail=o.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);let h=f.scrollHeight;
+  if(h>avail+1){const k=Math.max(.45,avail/h);f.style.zoom=k;h=f.getBoundingClientRect().height;if(h>avail+1)f.style.zoom=Math.max(.45,k*avail/h);}}
+function show(id){for(const e of document.querySelectorAll('.ov'))e.classList.toggle('on',e.id===id);requestAnimationFrame(fit);
   const play=!id;$('hud').style.display=play?'block':'none';$('ctl').style.display=play?'flex':'none';}
 function demoStart(){const th=Math.random()*THEMES.length|0;G={theme:th,diff:1,day:9,t:0,time:0,state:'play',dawnT:0,demo:true,danger:false,
   hero:{x:DOOR+70,dir:1,hp:3,maxHp:3,inv:0,shCd:0,shT:0,ph:0,moving:false,speed:215,range:80,stun:1.2,st:100,stRegen:99},
@@ -410,14 +431,14 @@ function goDiff(i){selTheme=i;const th=THEMES[i];$('dfT').textContent=L(th.n);$(
   DIFF.forEach((d,di)=>{const k=th.id+':'+di,run=SV.runs[k],best=SV.best[k]||0;const b=document.createElement('button');b.className='card';
     const cont=run&&run.day>1;
     b.innerHTML='<b>'+d.ic+'</b><div><span>'+t(d.k)+'</span><em>'+t(d.k+'D')+'</em></div>'+(cont?'<i>'+t('cont')+' '+run.day+'</i>':best>DAYS?'<i>✔ 30</i>':'');
-    b.onclick=()=>{sfx.ui();voStop();show(null);newRun(i,di,cont?run:null);};box.appendChild(b);
-    if(cont){const f=document.createElement('button');f.className='fresh';f.textContent=t(d.k)+' — '+t('fresh');f.onclick=()=>{sfx.ui();voStop();show(null);newRun(i,di,null);};box.appendChild(f);}});
+    const w=document.createElement('div');w.className='dc';box.appendChild(w);b.onclick=()=>{sfx.ui();voStop();show(null);newRun(i,di,cont?run:null);};w.appendChild(b);
+    if(cont){const f=document.createElement('button');f.className='fresh';f.textContent=t(d.k)+' — '+t('fresh');f.onclick=()=>{sfx.ui();voStop();show(null);newRun(i,di,null);};w.appendChild(f);}});
   show('sDiff');vo([th.vo,1]);}
 function buildTiles(){const g=$('grid');g.innerHTML='';
   THEMES.forEach((th,i)=>{const b=document.createElement('button');b.className='tile';let best=0;DIFF.forEach((d,di)=>best=Math.max(best,SV.best[th.id+':'+di]||0));
     b.innerHTML='<canvas width="420" height="300"></canvas><span class="ep">'+t('ep')+' '+th.ep+'</span><div class="nm">'+L(th.n)+'</div><div class="pr">'+t('mn_'+th.mode)+' · '+(best>DAYS?t('done'):best?t('best')+' '+best+'/30':'30 '+t('days30'))+'</div>';
     b.onclick=()=>{sfx.ui();goDiff(i);};g.appendChild(b);thumb(b.firstChild,i);});
-  for(let i=0;i<LOCKED;i++){const b=document.createElement('div');b.className='tile lock';b.innerHTML='<b>؟</b><div class="nm">'+t('soon')+'</div>';g.appendChild(b);}}
+  for(let i=0;i<LOCKED;i++){const b=document.createElement('div');b.className='tile lock';b.innerHTML='<b>؟</b><div class="nm">'+t('soon')+'</div>';g.appendChild(b);}requestAnimationFrame(fit);}
 function thumb(el,i){const sv=[c,VW,VH,GY,camX,G];c=el.getContext('2d');VW=760;VH=543;GY=470;camX=372;G=null;
   c.setTransform(420/760,0,0,420/760,0,0);drawScene(THEMES[i],0,0,null);[c,VW,VH,GY,camX,G]=sv;}
 function endDay(){
@@ -654,13 +675,15 @@ $('pMenu').onclick=$('endMenu').onclick=()=>{sfx.ui();goHome();};
 $('sndB').onclick=()=>{initAudio();const on=!(SV.sfx||SV.music);setMus(on);setSfx(on);sfx.ui();};
 for(const e of document.querySelectorAll('.langB'))e.onclick=()=>{initAudio();LANG=LANG==='ar'?'en':'ar';SV.lang=LANG;save();voStop();applyLang();sfx.ui();};
 for(const e of document.querySelectorAll('[data-back]'))e.onclick=()=>{sfx.ui();voStop();show(e.dataset.back);};
+$('fsB').onclick=()=>{try{const d=document;if(d.fullscreenElement)d.exitFullscreen();else d.documentElement.requestFullscreen().catch(()=>{});}catch(e){}};
+if(!document.documentElement.requestFullscreen)$('fsB').style.display='none';
 $('play').onclick=()=>{initAudio();sfx.ui();goThemes();};
 $('again').onclick=()=>{sfx.ui();if(endFn)endFn();};
 
 /* ---------- loop ---------- */
 function resize(){const cw=innerWidth,ch=innerHeight,dpr=Math.min(2,devicePixelRatio||1);cv.width=cw*dpr;cv.height=ch*dpr;
   if(cw/ch<.8){VW=470;S=cw/VW;VH=ch/S;GY=VH-250;}else{VH=760;S=ch/VH;VW=cw/S;GY=VH-170;}}
-addEventListener('resize',resize);resize();applyLang();demoStart();
+addEventListener('resize',()=>{resize();fit();});resize();applyLang();demoStart();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if($('sThemes').classList.contains('on'))buildTiles();});
 let last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!document.hidden){update(dt);draw();hud();}requestAnimationFrame(frame);}
